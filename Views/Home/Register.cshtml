@@ -33,7 +33,17 @@
                     </div>
                     <!-- Password input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="password" name="password" type="password" placeholder="Enter your password..." />
+                        <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email..." />
+                        <label for="password">Email Address</label>
+                    </div>
+                    <!-- Username input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="password" name="password" type="text" placeholder="Enter your password..." />
+                        <label for="username">Password</label>
+                    </div>
+                    <!-- Password input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="confpassword" name="confpassword" type="password" placeholder="Confirm Password..." />
                         <label for="password">Password</label>
                     </div>
                     <!-- Submit Button-->
@@ -43,3 +53,22 @@
         </div>
     </div>
 </section>
+
+<script>
+        $(document).ready(function() {
+        $('#registerForm').on('submit', function() {
+            
+            var Username = $("#username").val();
+            var Email = $("#email").val();
+            var Password = $("#password").val();
+            var ConfPass = $("#confpassword").val();
+
+            alert(
+                 "Username: " + Username + "\n" +
+                 "Email: " + Email + "\n" +
+                 "Password: " + Password + "\n" +
+                 "Confirm Password: " + ConfPass 
+            );
+        });
+    });
+</script>

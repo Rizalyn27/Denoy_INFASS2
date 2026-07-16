@@ -40,13 +40,6 @@ namespace Denoy_INFASS2.Controllers
         {
             return View();
         }
-        public IActionResult WelcomeMessage()
-        {
-            return Json(new
-            {
-                message = "Hello! This Message was made using json and ajax jquery!"
-            });
-              
-        }
+       
     }
 }
