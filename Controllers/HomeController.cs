@@ -29,14 +29,24 @@ namespace Denoy_INFASS2.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Route("Register")]
         public IActionResult Register()
         {
             return View();
         }
 
+        [Route("Login")]
         public IActionResult Login()
         {
             return View();
+        }
+        public IActionResult WelcomeMessage()
+        {
+            return Json(new
+            {
+                message = "Hello! This Message was made using json and ajax jquery!"
+            });
+              
         }
     }
 }

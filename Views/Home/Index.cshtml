@@ -415,3 +415,20 @@
             </div>
         </div>
     </div>
+
+
+<script>
+    $(document).ready(function() {
+    $.ajax({
+        url: '@Url.Action("WelcomeMessage", "Home")',
+        type: 'GET',
+        datatype: 'json',
+        success: function(response) {
+                alert(response.message);
+            },
+        error: function() {
+                alert('Error fetching welcome message:', error);
+            }
+        });
+    });
+</script>
