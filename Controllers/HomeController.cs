@@ -40,6 +40,16 @@ namespace Denoy_INFASS2.Controllers
         {
             return View();
         }
-       
+
+        [Route("GetUser")]
+        [HttpPost]
+        public IActionResult GetUser(string Username, string Email, string Password, string ConfPass)
+        {
+            Users user = new Users();
+    
+            return Content(user._sql(Username, Email, Password, ConfPass));
+
+        }
+
     }
 }

@@ -57,18 +57,23 @@
 <script>
         $(document).ready(function() {
         $('#registerForm').on('submit', function() {
-            
-            var Username = $("#username").val();
-            var Email = $("#email").val();
-            var Password = $("#password").val();
-            var ConfPass = $("#confpassword").val();
-
-            alert(
-                 "Username: " + Username + "\n" +
-                 "Email: " + Email + "\n" +
-                 "Password: " + Password + "\n" +
-                 "Confirm Password: " + ConfPass 
-            );
+            $.ajax({
+                url: '/GetUser', 
+                type: 'POST',
+                data: {
+                     "Username" : $("#username").val(),
+                     "Email" : $("#email").val(),
+                     "Password" : $("#password").val(),
+                     "ConfPass" : $("#confpassword").val()
+                }
+                success: function(response) {
+                    // Handle the response from the server
+                    Alert(response);
+                },
+              
+                }
+            });
+            $(ajax)
         });
     });
 </script>
