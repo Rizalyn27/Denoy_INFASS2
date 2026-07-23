@@ -46,8 +46,17 @@ namespace Denoy_INFASS2.Controllers
         public IActionResult GetUser(string Username, string Email, string Password, string ConfPass)
         {
             Users user = new Users();
-    
-            return Content(user._sql(Username, Email, Password, ConfPass));
+
+            string[] Fields = { "Username", "Email", "Password", "ConfPass" };
+            object[] Values =
+            {
+                Username, Email, Password, ConfPass
+
+            };
+
+          
+
+            return Content(user.GenerateSQL("Users", Fields, Values));
 
         }
 

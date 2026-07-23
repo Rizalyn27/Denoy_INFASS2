@@ -55,25 +55,26 @@
 </section>
 
 <script>
-        $(document).ready(function() {
-        $('#registerForm').on('submit', function() {
+    $(document).ready(function () {
+        $('#registerForm').on('submit', function (e) {
+            e.preventDefault();
+
             $.ajax({
-                url: '/GetUser', 
+                url: '/GetUser',
                 type: 'POST',
                 data: {
-                     "Username" : $("#username").val(),
-                     "Email" : $("#email").val(),
-                     "Password" : $("#password").val(),
-                     "ConfPass" : $("#confpassword").val()
-                }
-                success: function(response) {
-                    // Handle the response from the server
-                    Alert(response);
+                    Username: $("#username").val(),
+                    Email: $("#email").val(),
+                    Password: $("#password").val(),
+                    ConfPass: $("#confpassword").val()
                 },
-              
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + error);
                 }
             });
-            $(ajax)
         });
     });
 </script>
