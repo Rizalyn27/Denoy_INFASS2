@@ -46,9 +46,8 @@
                 if (Values[v] != null)
                 {
 
-                    if (int.TryParse(Values[v].ToString(), out int result))
+                    if (int.TryParse(Values[v].ToString(), out int _) || double.TryParse(Values[v].ToString(), out double _) || decimal.TryParse(Values[v].ToString(), out decimal _))
                     {
-                        Values[v] = result.ToString();
                         sql += Values[v];
                     }
                     else
