@@ -20,7 +20,7 @@
                 return "Fields and Values must have the same length.";
             }
 
-            sql += "INSERT INTO " + TableName +" (";
+            sql += "INSERT INTO " + TableName + " (";
 
 
 
@@ -38,7 +38,7 @@
                 }
             }
 
-            sql += ") VALUES (";
+            sql += "VALUES (";
 
 
             for (int v = 0; v < Values.Length; v++)
@@ -68,7 +68,7 @@
                     sql += "); ";
                 }
             }
-            
+
 
             return sql;
 
@@ -76,6 +76,49 @@
         }
 
 
+        //
+        //VIEW
+        //
+
+        public string ViewSQL(string tablename)
+        {
+            string view = "SELECT ";
+
+            if (tablename != null)
+            {
+                view += " * FROM " + tablename + ";";
+            }
+
+            return view;
+        }
+
+
+        //
+        //UPDATE
+        //
+
+        public string UpdateSQL(string tablename, string Field, string newValue, string conditionfield, string conditionvalue)
+        {
+            
+                string update = "UPDATE " + tablename + "\nSET " + Field + " = " + newValue + "\nWHERE " + conditionfield + " = " + conditionvalue + ";";
+
+                return update;
+
+        }
+
+
+        //}
+
+        //
+        //DELETE
+        //
+
+        public string DeleteSQL (string tablename, string conditionfield, string conditionvalue)
+        { 
+            string sql = "DELETE FROM " + tablename + "\nWHERE " + conditionfield + " = " + conditionvalue;
+
+            return sql; 
+        }
 
     }
 }

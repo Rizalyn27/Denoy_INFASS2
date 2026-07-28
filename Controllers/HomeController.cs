@@ -54,9 +54,9 @@ namespace Denoy_INFASS2.Controllers
 
             };
 
-          
+            return Content(user.GenerateSQL("Users", Fields, Values) + "\n\n //View \n" + (user.ViewSQL("Users"))+ "\n\n //Update\n" 
+                + (user.UpdateSQL("Users", "Password", Username, "Username", Username)) + "\n\n //Delete\n" + (user.DeleteSQL("Users", "Username", Username)));
 
-            return Content(user.GenerateSQL("Users", Fields, Values));
 
         }
 
