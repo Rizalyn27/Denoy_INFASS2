@@ -80,13 +80,13 @@
         //VIEW
         //
 
-        public string ViewSQL(string tablename)
+        public string ViewSQL(string tablename, string[] fields)
         {
             string view = "SELECT ";
 
             if (tablename != null)
             {
-                view += " * FROM " + tablename + ";";
+                return "SELECT " + string.Join(", ", fields) + " FROM " + tablename + ";";
             }
 
             return view;
@@ -97,14 +97,25 @@
         //UPDATE
         //
 
-        public string UpdateSQL(string tablename, string Field, string newValue, string conditionfield, string conditionvalue)
+        public string UpdateSQL( string tablename, string[] Field, object[] newValue, string conditionfield, object[] conditionvalue)
         {
-            
-                string update = "UPDATE " + tablename + "\nSET " + Field + " = " + newValue + "\nWHERE " + conditionfield + " = " + conditionvalue + ";";
+            string update = "UPDATE " + tablename + "\nSET ";
 
-                return update;
+            for (int i = 0; i < Field.Length; i++)
+            {
+                update += Field[i] + " = '" + newValue[i] + "'";
 
+                if (i < Field.Length - 1)
+                {
+                    update += ", ";
+                }
+            }
+
+            update += "\nWHERE " + conditionfield + " = '" + conditionvalue[0] + "';";
+
+            return update;
         }
+
 
 
         //}
@@ -113,12 +124,29 @@
         //DELETE
         //
 
-        public string DeleteSQL (string tablename, string conditionfield, string conditionvalue)
-        { 
-            string sql = "DELETE FROM " + tablename + "\nWHERE " + conditionfield + " = " + conditionvalue;
+        public string DeleteSQL( string tablename, string[] conditionfield, object[] conditionvalue)
+        {
+            string sql = "DELETE FROM " + tablename + "\nWHERE ";
 
-            return sql; 
+            for (int i = 0; i < conditionfield.Length; i++)
+            {
+                sql += conditionfield[i] +
+                       " = '" +
+                       conditionvalue[i] +
+                       "'";
+
+                if (i < conditionfield.Length - 1)
+                {
+                    sql += " AND ";
+                }
+            }
+
+            sql += ";";
+
+            return sql;
         }
+
+
 
     }
 }

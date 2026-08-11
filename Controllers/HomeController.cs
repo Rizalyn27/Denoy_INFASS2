@@ -41,24 +41,37 @@ namespace Denoy_INFASS2.Controllers
             return View();
         }
 
-        [Route("GetUser")]
         [HttpPost]
-        public IActionResult GetUser(string Username, string Email, string Password, string ConfPass)
+        [Route("getUser")]
+        public IActionResult GetUser(string username, string email, string password, string confPassword)
         {
             Users user = new Users();
 
             string[] Fields = { "Username", "Email", "Password", "ConfPass" };
             object[] Values =
             {
-                Username, Email, Password, ConfPass
+                username, email, password, confPassword
 
             };
 
-            return Content(user.GenerateSQL("Users", Fields, Values) + "\n\n //View \n" + (user.ViewSQL("Users"))+ "\n\n //Update\n" 
-                + (user.UpdateSQL("Users", "Password", Username, "Username", Username)) + "\n\n //Delete\n" + (user.DeleteSQL("Users", "Username", Username)));
+            string[] viewFields = { "*" };
 
+            string[] updateFields = { "Password" };
+            object[] updateValues = { email};
+
+            string[] deleteFields = { "Password" };
+            object[] deleteValues = { password };
+
+            object[] conditionvalue = { username };
+
+
+            return Content(
+                user.GenerateSQL("User", Fields, Values) + "\n\n" +
+                user.ViewSQL("User", viewFields) + "\n\n" +
+                user.UpdateSQL("User", updateFields, updateValues, "Username", conditionvalue ) + "\n\n" +
+                user.DeleteSQL("User", deleteFields, deleteValues)
+            );
 
         }
-
     }
 }
