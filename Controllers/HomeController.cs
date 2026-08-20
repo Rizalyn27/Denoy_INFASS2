@@ -1,16 +1,21 @@
-using System.Diagnostics;
 using Denoy_INFASS2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Diagnostics;
 
 namespace Denoy_INFASS2.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -23,10 +28,16 @@ namespace Denoy_INFASS2.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(
+            Duration = 0,
+            Location = ResponseCacheLocation.None,
+            NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
 
         [Route("Register")]
@@ -42,36 +53,37 @@ namespace Denoy_INFASS2.Controllers
         }
 
         [HttpPost]
-        [Route("getUser")]
-        public IActionResult GetUser(string username, string email, string password, string confPassword)
+        [Route("GetUser")]
+        public IActionResult GetUser(
+            string username,
+            string email,
+            string password,
+            string confPassword)
         {
-            Users user = new Users();
+            string connectionString =
+                _configuration.GetConnectionString("DefaultConnection");
 
-            string[] Fields = { "Username", "Email", "Password", "ConfPass" };
-            object[] Values =
-            {
-                username, email, password, confPassword
+            string sql = @"
+                INSERT INTO Users
+                (Username, Email, Password, ConfirmPassword)
+                VALUES
+                (@Username, @Email, @Password, @ConfirmPassword)";
 
-            };
+            using SqlConnection connection =
+                new SqlConnection(connectionString);
 
-            string[] viewFields = { "*" };
+            using SqlCommand command =
+                new SqlCommand(sql, connection);
 
-            string[] updateFields = { "Password" };
-            object[] updateValues = { email};
+            command.Parameters.AddWithValue("@Username", username);
+            command.Parameters.AddWithValue("@Email", email);
+            command.Parameters.AddWithValue("@Password", password);
+            command.Parameters.AddWithValue("@ConfirmPassword", confPassword);
 
-            string[] deleteFields = { "Password" };
-            object[] deleteValues = { password };
+            connection.Open();
+            command.ExecuteNonQuery();
 
-            object[] conditionvalue = { username };
-
-
-            return Content(
-                user.GenerateSQL("User", Fields, Values) + "\n\n" +
-                user.ViewSQL("User", viewFields) + "\n\n" +
-                user.UpdateSQL("User", updateFields, updateValues, "Username", conditionvalue ) + "\n\n" +
-                user.DeleteSQL("User", deleteFields, deleteValues)
-            );
-
+            return Content("User registered successfully!");
         }
     }
 }
