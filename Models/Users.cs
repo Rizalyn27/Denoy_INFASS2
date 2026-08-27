@@ -17,87 +17,87 @@ namespace Denoy_INFASS2.Models
         public string ConfirmPassword { get; set; } = string.Empty;
 
 
-        //public string GenerateSQL(string TableName, string[] Fields, object[] Values)
-        //{
+        public string GenerateSQL(string TableName, string[] Fields, object[] Values)
+        {
 
-        //    string sql = "";
+            string sql = "";
 
-        //    if (Fields.Length != Values.Length)
-        //    {
-        //        return "Fields and Values must have the same length.";
-        //    }
+            if (Fields.Length != Values.Length)
+            {
+                return "Fields and Values must have the same length.";
+            }
 
-        //    sql += "INSERT INTO " + TableName + " (";
-
-
-
-        //    for (int i = 0; i < Fields.Length; i++)
-        //    {
-        //        sql += Fields[i];
-
-        //        if (i < Fields.Length - 1)
-        //        {
-        //            sql += ", ";
-        //        }
-        //        else
-        //        {
-        //            sql += ") ";
-        //        }
-        //    }
-
-        //    sql += "VALUES (";
+            sql += "INSERT INTO " + TableName + " (";
 
 
-        //    for (int v = 0; v < Values.Length; v++)
-        //    {
-        //        if (Values[v] != null)
-        //        {
 
-        //            if (int.TryParse(Values[v].ToString(), out int _) || double.TryParse(Values[v].ToString(), out double _) || decimal.TryParse(Values[v].ToString(), out decimal _))
-        //            {
-        //                sql += Values[v];
-        //            }
-        //            else
-        //            {
-        //                sql += "'";
-        //                Values[v] = Values[v].ToString();
-        //                sql += Values[v];
-        //                sql += "'";
-        //            }
-        //        }
+            for (int i = 0; i < Fields.Length; i++)
+            {
+                sql += Fields[i];
 
-        //        if (v < Values.Length - 1)
-        //        {
-        //            sql += ", ";
-        //        }
-        //        else
-        //        {
-        //            sql += "); ";
-        //        }
-        //    }
+                if (i < Fields.Length - 1)
+                {
+                    sql += ", ";
+                }
+                else
+                {
+                    sql += ") ";
+                }
+            }
+
+            sql += "VALUES (";
 
 
-        //    return sql;
+            for (int v = 0; v < Values.Length; v++)
+            {
+                if (Values[v] != null)
+                {
+
+                    if (int.TryParse(Values[v].ToString(), out int _) || double.TryParse(Values[v].ToString(), out double _) || decimal.TryParse(Values[v].ToString(), out decimal _))
+                    {
+                        sql += Values[v];
+                    }
+                    else
+                    {
+                        sql += "'";
+                        Values[v] = Values[v].ToString();
+                        sql += Values[v];
+                        sql += "'";
+                    }
+                }
+
+                if (v < Values.Length - 1)
+                {
+                    sql += ", ";
+                }
+                else
+                {
+                    sql += "); ";
+                }
+            }
 
 
-        //}
+            return sql;
+
+
+        }
 
 
         ////
         ////VIEW
         ////
 
-        //public string ViewSQL(string tablename, string[] fields)
-        //{
-        //    string view = "SELECT ";
+        public string ViewSQL(string tablename, string[] fields)
+        {
+            string view = "SELECT ";
 
-        //    if (tablename != null)
-        //    {
-        //        return "SELECT " + string.Join(", ", fields) + " FROM " + tablename + ";";
-        //    }
+            if (tablename != null)
+            {
+                return "SELECT " + string.Join(", ", fields) + " FROM " + tablename + ";";
+            }
 
-        //    return view;
-        //}
+            return view;
+        }
 
 
         ////

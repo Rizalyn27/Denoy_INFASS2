@@ -1,8 +1,7 @@
-using Denoy_INFASS2.Models;
-using Denoy_INFASS2.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using System.Diagnostics;
+    using Denoy_INFASS2.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Data.SqlClient;
+    using System.Diagnostics;
 
 namespace Denoy_INFASS2.Controllers
 {
@@ -53,39 +52,26 @@ namespace Denoy_INFASS2.Controllers
             return View();
         }
 
-
-        public IActionResult Users()
-        {
-            return View();
-        }
-
         [HttpPost]
-        [Route("GetUser")]
-        public IActionResult GetUser(
-            string username,
-            string email,
-            string password,
-            string confPassword)
+        [Route("Register")]
+        public IActionResult Register(
+         string username,
+         string email,
+         string password,
+         string confPassword)
         {
             string connectionString =
                 _configuration.GetConnectionString("DefaultConnection");
 
-            string sql = @"
-                INSERT INTO Users
-                (Username, Email, Password, ConfirmPassword)
-                VALUES
-                (@Username, @Email, @Password, @ConfirmPassword)";
+            var userModel = new Users();
 
-            using SqlConnection connection =
-                new SqlConnection(connectionString);
+            string[] fields = { "Username", "Email", "Password", "ConfirmPassword" };
+            object[] values = { username, email, password, confPassword };
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
+            string sql = userModel.GenerateSQL("Users", fields, values);
 
-            command.Parameters.AddWithValue("@Username", username);
-            command.Parameters.AddWithValue("@Email", email);
-            command.Parameters.AddWithValue("@Password", password);
-            command.Parameters.AddWithValue("@ConfirmPassword", confPassword);
+            using SqlConnection connection = new SqlConnection(connectionString);
+            using SqlCommand command = new SqlCommand(sql, connection);
 
             connection.Open();
             command.ExecuteNonQuery();
@@ -94,38 +80,41 @@ namespace Denoy_INFASS2.Controllers
         }
 
         [HttpPost]
-        [Route("View")]
-        public IActionResult View()
+        [Route("GetUsers")]
+        public IActionResult GetUsers()
         {
-            var UserList = new List<UsersViewModel>();
-
+            var userList = new List<Users>();
             string connectionString =
                 _configuration.GetConnectionString("DefaultConnection");
 
-            string sql = @"
-                SELECT * FROM Users";
+            var userModel = new Users();
+            string[] fields = { "Id", "Username", "Email", "Password" };
+            string sql = userModel.ViewSQL("Users", fields);
 
-            using SqlConnection connection =
-                new SqlConnection(connectionString);
+            using SqlConnection connection = new SqlConnection(connectionString);
+            using SqlCommand command = new SqlCommand(sql, connection);
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
             connection.Open();
             using SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
-                var user = new UsersViewModel
+                var user = new Users
                 {
-                    Username = reader["Username"] != DBNull.Value ? reader["Username"].ToString() : string.Empty,
-                    Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
-                    Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Username = reader["Username"].ToString(),
+                    Email = reader["Email"].ToString(),
+                    Password = reader["Password"].ToString()
                 };
+                userList.Add(user);
+            }
 
-                UserList.Add(user);
-            }   
+            return Json(userList);
+        }
 
-            return View(UserList);
+        public IActionResult Users()
+        {
+            return View();
         }
     }
 }
