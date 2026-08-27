@@ -1,10 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Principal;
 
 namespace Denoy_INFASS2.Models
 {
     public class Users
     {
-        
+
+        //SQL 
+        //USE Denoy_INFASS2;
+
+        //DROP TABLE IF EXISTS Users;
+
+        //CREATE TABLE Users
+        //(
+        //    Id INT IDENTITY(1,1) PRIMARY KEY,
+        //    Username VARCHAR(100) NOT NULL,
+        //    Email VARCHAR(255) NOT NULL,
+        //    Password VARCHAR(255) NOT NULL,
+        //    ConfirmPassword VARCHAR(255) NOT NULL
+        //);
+
+        //SELECT* FROM Users;
+
         [Key]
         public int Id { get; set; }
 
