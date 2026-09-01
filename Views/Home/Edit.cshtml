@@ -1,0 +1,38 @@
+﻿@model Denoy_INFASS2.Models.Users
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<section class="page-section">
+    <div class="container">
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Edit User</h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-user-edit"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <form method="post" action="/Edit/@Model.Id">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="username" name="username" type="text" value="@Model.Username" />
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="email" name="email" type="email" value="@Model.Email" />
+                        <label for="email">Email Address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="password" name="password" type="password" value="@Model.Password" />
+                        <label for="password">Password</label>
+                    </div>
+                    <button class="btn btn-primary btn-xl" type="submit">Save Changes</button>
+                    <a href="/Users" class="btn btn-secondary btn-xl">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

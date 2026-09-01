@@ -112,9 +112,87 @@ namespace Denoy_INFASS2.Controllers
             return Json(userList);
         }
 
+        [Route("Users")]
         public IActionResult Users()
         {
             return View();
         }
+
+
+
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            Users user = null;
+
+            string sql = "SELECT Id, Username, Email, Password FROM Users WHERE Id = " + id + ";";
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            using SqlCommand command = new SqlCommand(sql, connection);
+
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                user = new Users
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Username = reader["Username"].ToString(),
+                    Email = reader["Email"].ToString(),
+                    Password = reader["Password"].ToString()
+                };
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [Route("Edit/{id}")]
+        public IActionResult Edit(int id, string username, string email, string password)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var userModel = new Users();
+
+            string[] fields = { "Username", "Email", "Password" };
+            object[] values = { username, email, password };
+
+            string sql = userModel.UpdateSQL("Users", fields, values, "Id", new object[] { id });
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            using SqlCommand command = new SqlCommand(sql, connection);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+
+            return RedirectToAction("Users");
+        }
+
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var userModel = new Users();
+
+            string sql = userModel.DeleteSQL("Users", new[] { "Id" }, new object[] { id });
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            using SqlCommand command = new SqlCommand(sql, connection);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+
+            return RedirectToAction("Users");
+        }
+
+
     }
 }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Denoy_INFASS2.Models.Users
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -18,8 +20,8 @@
                     <th>ID</th>
                     <th>Username</th>
                     <th>Email</th>
-@*                     <th>Actons</th>
- *@                </tr>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody id="UserTableBody">
                
@@ -48,10 +50,15 @@
             userList.forEach(user => {
                 const row = `
                     <tr>
+                        <td>${user.id || ''}</td>
                         <td>${user.username || ''}</td>
                         <td>${user.email || ''}</td>
                         <td>${user.password || ''}</td>
-                    </tr>
+                        <td>
+                            <a href="/Edit/${user.id}" class="btn btn-sm btn-outline-primary">✏️</a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="DeleteUser(${user.id})">🗑️</button>
+                        </td>
+                   </tr>
                 `;
 
                 bodyTable.insertAdjacentHTML('beforeend', row);
@@ -61,6 +68,22 @@
             console.error("Error!", error);
         });
     }
+
+    function DeleteUser(id) {
+        if (!confirm("Delete this user?")) {
+            return;
+        }
+
+        fetch('/Delete/' + id, { method: 'POST' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network Error: " + response.status);
+                }
+                LoadUsers();
+            })
+            .catch(error => console.error("Error!", error));
+    }
+
 
     document.addEventListener('DOMContentLoaded', LoadUsers);
 </script>

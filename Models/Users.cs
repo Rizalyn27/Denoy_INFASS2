@@ -118,58 +118,58 @@ namespace Denoy_INFASS2.Models
         }
 
 
-        ////
-        ////UPDATE
-        ////
+        //
+        //UPDATE
+        //
 
-        //public string UpdateSQL(string tablename, string[] Field, object[] newValue, string conditionfield, object[] conditionvalue)
-        //{
-        //    string update = "UPDATE " + tablename + "\nSET ";
+        public string UpdateSQL(string tablename, string[] Field, object[] newValue, string conditionfield, object[] conditionvalue)
+        {
+            string update = "UPDATE " + tablename + "\nSET ";
 
-        //    for (int i = 0; i < Field.Length; i++)
-        //    {
-        //        update += Field[i] + " = '" + newValue[i] + "'";
+            for (int i = 0; i < Field.Length; i++)
+            {
+                update += Field[i] + " = '" + newValue[i] + "'";
 
-        //        if (i < Field.Length - 1)
-        //        {
-        //            update += ", ";
-        //        }
-        //    }
+                if (i < Field.Length - 1)
+                {
+                    update += ", ";
+                }
+            }
 
-        //    update += "\nWHERE " + conditionfield + " = '" + conditionvalue[0] + "';";
+            update += "\nWHERE " + conditionfield + " = '" + conditionvalue[0] + "';";
 
-        //    return update;
-        //}
+            return update;
+        }
 
 
 
         ////}
 
-        ////
-        ////DELETE
-        ////
+        //
+        //DELETE
+        //
 
-        //public string DeleteSQL(string tablename, string[] conditionfield, object[] conditionvalue)
-        //{
-        //    string sql = "DELETE FROM " + tablename + "\nWHERE ";
+        public string DeleteSQL(string tablename, string[] conditionfield, object[] conditionvalue)
+        {
+            string sql = "DELETE FROM " + tablename + "\nWHERE ";
 
-        //    for (int i = 0; i < conditionfield.Length; i++)
-        //    {
-        //        sql += conditionfield[i] +
-        //               " = '" +
-        //               conditionvalue[i] +
-        //               "'";
+            for (int i = 0; i < conditionfield.Length; i++)
+            {
+                sql += conditionfield[i] +
+                       " = '" +
+                       conditionvalue[i] +
+                       "'";
 
-        //        if (i < conditionfield.Length - 1)
-        //        {
-        //            sql += " AND ";
-        //        }
-        //    }
+                if (i < conditionfield.Length - 1)
+                {
+                    sql += " AND ";
+                }
+            }
 
-        //    sql += ";";
+            sql += ";";
 
-        //    return sql;
-        //}
+            return sql;
+        }
 
 
 
